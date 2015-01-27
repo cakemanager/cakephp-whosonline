@@ -1,6 +1,6 @@
 # WhosOnline plugin for CakePHP
 
-This is a pre-alpha version of a WhosOnline plugin for CakePHP 3.0. It is currently under development and should be considered experimental.
+This is a pre-alpha version of a WhosOnline plugin for CakePHP 3.0 and the CakeManager. It is currently under development and should be considered experimental.
 
 ## Installation
 
@@ -9,23 +9,25 @@ You can install this plugin into your CakePHP application using [composer](http:
 The recommended way to install composer packages is:
 
 ```
-composer require cakemanager/cakephp-whospnline
+composer require cakemanager/cakephp-whosonline
 ```
 
 ## Configuration
 
 You will need to add the following line to your application's bootstrap.php file:
 
-```
-Plugin::load('WhosOnline', ['bootstrap' => false, 'routes' => true]);
+```php
+Plugin::load('WhosOnline', ['bootstrap' => true, 'routes' => true]);
 ```
 
 
 ## Usage
 
+### Component
+
 Add the following to your `AppController` to use the plugin-callbacks:
 
-```
+```php
 $this->loadComponent('WhosOnline.WhosOnline', []);
 ```
 
@@ -44,7 +46,7 @@ All statuss are default set to `true`.
 
 Example:
 
-```
+```php
 $this->loadComponent('WhosOnline.WhosOnline', [
   'lastSeen' => true,
   'failedLogins' => false,
@@ -52,3 +54,7 @@ $this->loadComponent('WhosOnline.WhosOnline', [
 ```
 
 From now on the component will save all statuss automatically!
+
+### Watching
+
+If you want to watch the usermetas, watch the menu-item "Who Is Online" and click on it. You will see a list of recent online users and its data.
