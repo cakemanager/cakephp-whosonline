@@ -8,9 +8,8 @@
             <th><?= $this->Paginator->sort('user_id') ?></th>
             <th><?= $this->Paginator->sort('last_seen') ?></th>
             <th><?= $this->Paginator->sort('last_login') ?></th>
-            <th><?= $this->Paginator->sort('passed_logins') ?></th>
-            <th><?= $this->Paginator->sort('failed_logins') ?></th>
-            <th><?= $this->Paginator->sort('password_requests') ?></th>
+            <th><?= $this->Paginator->sort('passed_logins', 'Logins') ?></th>
+            <th><?= $this->Paginator->sort('password_requests', 'Pass requests') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -18,21 +17,20 @@
             <tr>
                 <td><?= $usermeta->user->get('email') ?></td>
                 <td><?=
-                    h($usermeta->last_seen->timeAgoInWords([
+                    (($usermeta->last_seen) ? h($usermeta->last_seen->timeAgoInWords([
                                 'accuracy' => ['second' => 'second'],
                                 'end'      => '1 day'
                             ])
-                    )
+                    ) : 'Never')
                     ?></td>
                 <td><?=
-                    h($usermeta->last_login->timeAgoInWords([
+                    (($usermeta->last_login) ? h($usermeta->last_login->timeAgoInWords([
                                 'accuracy' => ['hour' => 'hour'],
                                 'end'      => '1 day'
                             ])
-                    )
+                    ) : 'Never')
                     ?></td>
                 <td><?= $this->Number->format($usermeta->passed_logins) ?></td>
-                <td><?= $this->Number->format($usermeta->failed_logins) ?></td>
                 <td><?= $this->Number->format($usermeta->password_requests) ?></td>
             </tr>
 
