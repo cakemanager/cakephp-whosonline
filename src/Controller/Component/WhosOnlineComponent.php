@@ -192,9 +192,11 @@ class WhosOnlineComponent extends Component
     public function lastSeenEvent($event) {
         $user = $this->_getUsermetas();
 
-        $user->set('last_seen', Time::now());
+        if ($user) {
+            $user->set('last_seen', Time::now());
 
-        $this->Usermetas->save($user);
+            $this->Usermetas->save($user);
+        }
     }
 
     /**
