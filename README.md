@@ -1,6 +1,15 @@
 # WhosOnline plugin for CakePHP
 
-This is a pre-alpha version of a WhosOnline plugin for CakePHP 3.0 and the CakeManager. It is currently under development and should be considered experimental.
+The WhosOnline plugin for CakePHP 3.0 and the CakeManager helps you to watch your registered users. 
+You are able to see the following:
+
+- Last login timestamp
+- Last seen timestamp
+- Total passed logins
+- Total failed logins
+- Total new password requests
+
+Note that you need the [CakeManager Plugin](https://github.com/cakemanager/cakephp-cakemanager) for this plugin!
 
 ## Installation
 
