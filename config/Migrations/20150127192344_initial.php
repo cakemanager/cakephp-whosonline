@@ -12,7 +12,7 @@ class Initial extends AbstractMigration
      */
     public function up() {
 
-        $table = $this->table('usermetas', [
+        $table = $this->table('whosonline_usermetas', [
             'id'          => false,
             'primary_key' => 'id',
         ]);
@@ -46,7 +46,7 @@ class Initial extends AbstractMigration
      */
     public function down() {
 
-        $this->dropTable('usermetas');
+        $this->dropTable('whosonline_usermetas');
     }
 
 }

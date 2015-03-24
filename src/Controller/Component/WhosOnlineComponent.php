@@ -1,18 +1,28 @@
 <?php
-
+/**
+ * CakeManager (http://cakemanager.org)
+ * Copyright (c) http://cakemanager.org
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) http://cakemanager.org
+ * @link          http://cakemanager.org CakeManager Project
+ * @since         1.0
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
 namespace WhosOnline\Controller\Component;
 
 use Cake\Controller\Component;
-use Cake\Controller\ComponentRegistry;
-use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
+use Cake\ORM\TableRegistry;
 
 /**
  * WhosOnline component
  */
 class WhosOnlineComponent extends Component
 {
-
     /**
      * Default configuration.
      *
@@ -31,13 +41,13 @@ class WhosOnlineComponent extends Component
      * @var array
      */
     protected $_defaultConfig = [
-        'userId'           => 'Auth.User.id',
-        'userModel'        => 'CakeManager.Users',
-        'usermetasModel'   => 'WhosOnline.Usermetas',
-        'lastSeen'         => true,
-        'lastLogin'        => true,
-        'passedLogins'     => true,
-        'failedLogins'     => true,
+        'userId' => 'Auth.User.id',
+        'userModel' => 'CakeManager.Users',
+        'usermetasModel' => 'WhosOnline.Usermetas',
+        'lastSeen' => true,
+        'lastLogin' => true,
+        'passedLogins' => true,
+        'failedLogins' => true,
         'passwordRequests' => true,
     ];
 
@@ -63,11 +73,13 @@ class WhosOnlineComponent extends Component
     protected $_Controller = null;
 
     /**
-     * Initialize
+     * initialize
      *
-     * @param array $config
+     * @param array $config Config.
+     * @return void
      */
-    public function initialize(array $config) {
+    public function initialize(array $config)
+    {
         parent::initialize($config);
 
         $this->_Controller = $this->_registry->getController();
@@ -78,33 +90,37 @@ class WhosOnlineComponent extends Component
     }
 
     /**
-     * BeforeFilter Event
+     * BeforeFilter
      *
-     * @param type $event
+     * @param \Cake\Event\Event $event Event.
+     * @return void
      */
-    public function beforeFilter($event) {
-
+    public function beforeFilter($event)
+    {
         $event->subject()->Menu->add('Who Is Online', [
             'weight' => 20,
-            'url'    => [
-                'prefix'     => 'admin',
-                'plugin'     => 'WhosOnline',
+            'url' => [
+                'prefix' => 'admin',
+                'plugin' => 'WhosOnline',
                 'controller' => 'whosonline',
-                'action'     => 'index',
+                'action' => 'index',
             ]
         ]);
     }
 
     /**
+     * _getUsermetas
+     *
      * Returns the metadata from the selected user.
      * Use the first parameter for the id.
      * If it's empty it returns the logged in users metadata.
      *
-     * @param type $id
-     * @return type
+     * @param mixed int|void $id ID of the user
+     * @param array $options Options.
+     * @return \Cake\ORM\Entity
      */
-    protected function _getUsermetas($id = null, $options = []) {
-
+    protected function _getUsermetas($id = null, $options = [])
+    {
         $_options = [
             'autoCreate' => true
         ];
@@ -131,17 +147,18 @@ class WhosOnlineComponent extends Component
     }
 
     /**
+     * _createUsermetas
+     *
      * Creates an usermetas-row for the user if it doesnt exist
      * Use the first parameter for the id.
      * If it's empty it returns the logged in users metadata.
      *
-     * @param type $id
-     * @return boolean
+     * @param mixed int|void $id ID of the user
+     * @return \Cake\ORM\Entity|bool
      */
-    protected function _createUsermetas($id = null) {
-
+    protected function _createUsermetas($id = null)
+    {
         if (!$this->_getUsermetas($id, ['autoCreate' => false])) {
-
             if (!$id) {
                 $id = $this->_Controller->request->Session()->read($this->config('userId'));
 
@@ -150,51 +167,95 @@ class WhosOnlineComponent extends Component
                 }
             }
 
-
             $data = [
                 'user_id' => $id,
             ];
 
             return $this->Usermetas->save($this->Usermetas->newEntity($data));
         }
-
         return false;
     }
 
     /**
+     * loginEvent
+     *
      * Event - triggered when an user logs in.
-     * To check if the login passed or failed, check the session!
      *
-     * NOT IMPLEMENTED YET!
-     *
-     * @param type $event
+     * @param \Cake\Event\Event $event Event.
+     * @param array $user The user who just logged in.
+     * @return void
      */
-    public function loginEvent($event) {
-
+    public function loginEvent($event, $user)
+    {
+        if ($user) {
+            $_user = $this->_getUsermetas();
+            if ($_user) {
+                $_user->set('passed_logins', $_user->get('passed_logins') + 1);
+                $_user->set('last_login', Time::now());
+                $this->Usermetas->save($_user);
+            }
+        }
     }
 
     /**
+     * invalidLoginEvent
+     *
+     * Event - triggered when an user logs in.
+     *
+     * @param \Cake\Event\Event $event Event.
+     * @return void
+     */
+    public function invalidLoginEvent($event)
+    {
+        if (key_exists('email', $event->subject()->request->data)) {
+            $user = $this->Users->findByEmail($event->subject()->request->data['email'])->first();
+        }
+
+        if ($user) {
+            $_user = $this->_getUsermetas($user->get('id'));
+            if ($_user) {
+                $_user->set('failed_logins', $_user->get('failed_logins') + 1);
+                $this->Usermetas->save($_user);
+            }
+        }
+    }
+
+    /**
+     * passwordRequestEvent
+     *
      * Event - triggered when an user requests a new password
      *
-     * NOT IMPLEMENTED YET!
-     *
-     * @param type $event
+     * @param \Cake\Event\Event $event Event.
+     * @return void
      */
-    public function passwordRequestEvent($event) {
+    public function passwordRequestEvent($event)
+    {
+        if (key_exists('email', $event->subject()->request->data)) {
+            $user = $this->Users->findByEmail($event->subject()->request->data['email'])->first();
+        }
 
+        if ($user) {
+            $_user = $this->_getUsermetas($user->get('id'));
+            if ($_user) {
+                $_user->set('password_requests', $_user->get('password_requests') + 1);
+                $this->Usermetas->save($_user);
+            }
+        }
     }
 
     /**
      * Event - triggered every beforeFilter-callback.
      * Sets the date and time when the user is last seen.
-     * @param type $event
+     *
+     * @param \Cake\Event\Event $event Event.
+     * @return void
      */
-    public function lastSeenEvent($event) {
+    public function lastSeenEvent($event)
+    {
         $user = $this->_getUsermetas();
 
         if ($user) {
             $user->set('last_seen', Time::now());
-
             $this->Usermetas->save($user);
         }
     }
@@ -202,10 +263,10 @@ class WhosOnlineComponent extends Component
     /**
      * Implemented events
      *
-     * @return type
+     * @return array
      */
-    public function implementedEvents() {
-
+    public function implementedEvents()
+    {
         $_events = parent::implementedEvents();
 
         if ($this->config('lastSeen')) {
@@ -213,14 +274,17 @@ class WhosOnlineComponent extends Component
         }
 
         if ($this->config('passwordRequests')) {
-            $events['Component.Users.request'] = 'passwordRequestEvent';
+            $events['Controller.Users.afterForgotPassword'] = 'passwordRequestEvent';
         }
 
         if ($this->config('lastLogin')) {
-            $events['Component.Users.login'] = 'loginEvent';
+            $events['Controller.Users.afterLogin'] = 'loginEvent';
+        }
+
+        if ($this->config('lastLogin')) {
+            $events['Controller.Users.afterInvalidLogin'] = 'invalidLoginEvent';
         }
 
         return array_merge($_events, $events);
     }
-
 }

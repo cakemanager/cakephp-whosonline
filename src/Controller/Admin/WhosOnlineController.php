@@ -1,5 +1,17 @@
 <?php
-
+/**
+ * CakeManager (http://cakemanager.org)
+ * Copyright (c) http://cakemanager.org
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) http://cakemanager.org
+ * @link          http://cakemanager.org CakeManager Project
+ * @since         1.0
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
 namespace WhosOnline\Controller\Admin;
 
 use WhosOnline\Controller\AppController;
@@ -11,18 +23,6 @@ use WhosOnline\Controller\AppController;
  */
 class WhosOnlineController extends AppController
 {
-
-    /**
-     * Initializer
-     *
-     */
-    public function initialize() {
-        parent::initialize();
-
-
-        $this->loadModel('WhosOnline.Usermetas');
-    }
-
     /**
      * Pagination settings
      *
@@ -37,15 +37,32 @@ class WhosOnlineController extends AppController
     ];
 
     /**
-     * IsAuthorized method
-     * Authorizes the controller
+     * initialize
      *
-     * @param type $user
-     * @return type
+     * @return void
      */
-    public function isAuthorized($user) {
+    public function initialize()
+    {
+        parent::initialize();
 
-        $this->Authorizer->action(['*'], function($auth) {
+        $this->loadComponent('Utils.Search');
+
+        $this->loadModel('WhosOnline.Usermetas');
+
+        $this->helpers['Utils.Search'] = [];
+    }
+
+    /**
+     * IsAuthorized
+     *
+     * Authorizes the controller.
+     *
+     * @param array $user User.
+     * @return bool
+     */
+    public function isAuthorized($user)
+    {
+        $this->Authorizer->action(['*'], function ($auth) {
             $auth->allowRole(1);
         });
 
@@ -57,22 +74,25 @@ class WhosOnlineController extends AppController
      *
      * @return void
      */
-    public function index() {
-        $this->set('usermetas', $this->paginate($this->Usermetas));
+    public function index()
+    {
+        $this->Search->addFilter('email');
+
+        $query = $this->Search->search($this->Usermetas->find('all'));
+
+        $this->set('usermetas', $this->paginate($query));
     }
 
     /**
      * View method
      *
-     * @param string|null $id Whos Online id
+     * @param string|null $id ID of the user
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException
      */
-    public function view($id = null) {
-        $whosOnline = $this->WhosOnline->get($id, [
-            'contain' => []
-        ]);
-        $this->set('whosOnline', $whosOnline);
+    public function view($id = null)
+    {
+        $usermeta = $this->Usermetas->findByUserId($id)->contain(['Users' => ['Roles']])->first();
+        $this->set(compact('usermeta'));
     }
-
 }
