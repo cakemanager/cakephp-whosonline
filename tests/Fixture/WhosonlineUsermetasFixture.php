@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * CakeManager (http://cakemanager.org)
  * Copyright (c) http://cakemanager.org
@@ -44,5 +44,4 @@ class WhosonlineUsermetasFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
 }
