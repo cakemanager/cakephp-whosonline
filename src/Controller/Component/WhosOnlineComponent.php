@@ -66,11 +66,24 @@ class WhosOnlineComponent extends Component
     protected $Usermetas = null;
 
     /**
-     * Holder for the controller
+     * The controller.
      *
-     * @var type
+     * @var \Cake\Controller\Controller
      */
-    protected $_Controller = null;
+    private $Controller = null;
+
+    /**
+     * setController
+     *
+     * Setter for the Controller property.
+     *
+     * @param \Cake\Controller\Controller $controller Controller.
+     * @return void
+     */
+    public function setController($controller)
+    {
+        $this->Controller = $controller;
+    }
 
     /**
      * initialize
@@ -82,7 +95,7 @@ class WhosOnlineComponent extends Component
     {
         parent::initialize($config);
 
-        $this->_Controller = $this->_registry->getController();
+        $this->Controller = $this->_registry->getController();
 
         $this->Users = TableRegistry::get($this->config('userModel'));
 
@@ -128,9 +141,9 @@ class WhosOnlineComponent extends Component
         $options = array_merge($_options, $options);
 
         if (!$id) {
-            $id = $this->_Controller->request->Session()->read($this->config('userId'));
+            $id = $this->Controller->request->Session()->read($this->config('userId'));
         }
-
+        
         $data = $this->Usermetas->find()->where(['user_id' => $id]);
 
         if ($data->Count() > 0) {
@@ -140,9 +153,9 @@ class WhosOnlineComponent extends Component
         $generated = null;
 
         if ($options['autoCreate']) {
-            $generated = $this->_createUsermetas();
+            $generated = $this->_createUsermetas($id);
         }
-
+        
         return $generated;
     }
 
@@ -160,9 +173,8 @@ class WhosOnlineComponent extends Component
     {
         if (!$this->_getUsermetas($id, ['autoCreate' => false])) {
             if (!$id) {
-                $id = $this->_Controller->request->Session()->read($this->config('userId'));
-
-                if (!$id) {
+                $id = $this->Controller->request->Session()->read($this->config('userId'));
+                if (is_null($id)) {
                     return false;
                 }
             }
@@ -171,7 +183,9 @@ class WhosOnlineComponent extends Component
                 'user_id' => $id,
             ];
 
-            return $this->Usermetas->save($this->Usermetas->newEntity($data));
+            $this->Usermetas->save($this->Usermetas->newEntity($data));
+
+            return $this->Usermetas->findByUserId($id)->first();
         }
         return false;
     }
@@ -185,13 +199,17 @@ class WhosOnlineComponent extends Component
      * @param array $user The user who just logged in.
      * @return void
      */
-    public function loginEvent($event, $user)
+    public function afterLoginEvent($event, $user)
     {
         if ($user) {
             $_user = $this->_getUsermetas();
             if ($_user) {
-                $_user->set('passed_logins', $_user->get('passed_logins') + 1);
-                $_user->set('last_login', Time::now());
+                if ($this->config('passedLogins')) {
+                    $_user->set('passed_logins', $_user->get('passed_logins') + 1);
+                }
+                if ($this->config('lastLogin')) {
+                    $_user->set('last_login', Time::now());
+                }
                 $this->Usermetas->save($_user);
             }
         }
@@ -210,7 +228,6 @@ class WhosOnlineComponent extends Component
         if (key_exists('email', $event->subject()->request->data)) {
             $user = $this->Users->findByEmail($event->subject()->request->data['email'])->first();
         }
-
         if ($user) {
             $_user = $this->_getUsermetas($user->get('id'));
             if ($_user) {
@@ -253,7 +270,6 @@ class WhosOnlineComponent extends Component
     public function lastSeenEvent($event)
     {
         $user = $this->_getUsermetas();
-
         if ($user) {
             $user->set('last_seen', Time::now());
             $this->Usermetas->save($user);
@@ -269,6 +285,8 @@ class WhosOnlineComponent extends Component
     {
         $_events = parent::implementedEvents();
 
+        $events = [];
+
         if ($this->config('lastSeen')) {
             $events['Component.Manager.beforeFilter'] = 'lastSeenEvent';
         }
@@ -277,11 +295,11 @@ class WhosOnlineComponent extends Component
             $events['Controller.Users.afterForgotPassword'] = 'passwordRequestEvent';
         }
 
-        if ($this->config('lastLogin')) {
-            $events['Controller.Users.afterLogin'] = 'loginEvent';
+        if ($this->config('lastLogin') || $this->config('passedLogins')) {
+            $events['Controller.Users.afterLogin'] = 'afterLoginEvent';
         }
 
-        if ($this->config('lastLogin')) {
+        if ($this->config('failedLogins')) {
             $events['Controller.Users.afterInvalidLogin'] = 'invalidLoginEvent';
         }
 
