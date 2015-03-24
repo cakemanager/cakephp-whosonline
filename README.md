@@ -33,16 +33,16 @@ $this->loadComponent('WhosOnline.WhosOnline', []);
 
 Options for the component:
 
-- userId:            Path to the users id in the session
-- userModel:         The model of the users. Default `CakeManager.Users`
-- usermetasModel     The model of the usermetas. Default `WhosOnline.Usermetas`
-- lastSeen           Boolean if we should save the lastSeen-status
-- lastLogin          Boolean if we should save the lastLogin-status
-- passedLogins       Boolean if we should save the passedLogins-status
-- failedLogins       Boolean if we should save the failedLogins-status
-- passwordRequests   Boolean if we should save the passwordRequests-status
+- `userId` - Path to the users id in the session
+- `userModel` - The model of the users. Default `CakeManager.Users`
+- `usermetasModel` - The model of the usermetas. Default `WhosOnline.Usermetas`
+- `lastSeen` - Boolean if we should save the lastSeen-status
+- `lastLogin` - Boolean if we should save the lastLogin-status
+- `passedLogins` - Boolean if we should save the passedLogins-status
+- `failedLogins` - Boolean if we should save the failedLogins-status
+- `passwordRequests` - Boolean if we should save the passwordRequests-status
 
-All statuss are default set to `true`.
+All statuses are default set to `true`.
 
 Example:
 
@@ -53,7 +53,7 @@ $this->loadComponent('WhosOnline.WhosOnline', [
 ]);
 ```
 
-From now on the component will save all statuss automatically!
+From now on the component will save all statuses automatically!
 
 ### Watching
 
@@ -62,7 +62,14 @@ If you want to watch the usermetas, watch the menu-item "Who Is Online" and clic
 Support
 -------
 
-For bugs and feature requests, please use the [issues](https://github.com/cakemanager/cakephp-whosonline/issues) section of this repository.
+- [CakeManager Website](http://cakemanager.org/) - Website of the CakeManager Team. Here you can find everything about us and our plugins.
+
+- [Gitter](https://gitter.im/cakemanager/cakephp-cakemanager) - Chat Tool for GitHub to talk about issues and new features.
+
+- [GitHub](https://github.com/cakemanager/cakephp-whosonline/issues) - When there's something wrong, please open a new issue!
+
+- [CakeManager Docs](http://cakemanager.org/docs/1.0/) - Documentation about the CakeManager Plugin.
+
 
 Contributing
 ------------
