@@ -29,6 +29,11 @@ You will need to add the following line to your application's bootstrap.php file
 Plugin::load('WhosOnline', ['bootstrap' => true, 'routes' => true]);
 ```
 
+Next you need migrations to create the table for the plugin in your shell:
+
+```bash
+cake migrations migrate --plugin="WhosOnline"
+```
 
 ## Usage
 
