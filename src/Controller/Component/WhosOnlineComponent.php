@@ -290,11 +290,10 @@ class WhosOnlineComponent extends Component
      */
     public function implementedEvents()
     {
+        $_events = parent::implementedEvents();
+        $events = [];
+
         if ($this->tableExists) {
-            $_events = parent::implementedEvents();
-
-            $events = [];
-
             if ($this->config('lastSeen')) {
                 $events['Component.Manager.beforeFilter'] = 'lastSeenEvent';
             }
