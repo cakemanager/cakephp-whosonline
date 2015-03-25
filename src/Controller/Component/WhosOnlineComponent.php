@@ -100,6 +100,13 @@ class WhosOnlineComponent extends Component
         $this->Users = TableRegistry::get($this->config('userModel'));
 
         $this->Usermetas = TableRegistry::get($this->config('usermetasModel'));
+
+        try {
+            TableRegistry::get('whosonline_usermetas')->schema();
+            $this->tableExists = true;
+        } catch (\Cake\Database\Exception $e) {
+            $this->tableExists = false;
+        }
     }
 
     /**
@@ -143,7 +150,7 @@ class WhosOnlineComponent extends Component
         if (!$id) {
             $id = $this->Controller->request->Session()->read($this->config('userId'));
         }
-        
+
         $data = $this->Usermetas->find()->where(['user_id' => $id]);
 
         if ($data->Count() > 0) {
@@ -155,7 +162,7 @@ class WhosOnlineComponent extends Component
         if ($options['autoCreate']) {
             $generated = $this->_createUsermetas($id);
         }
-        
+
         return $generated;
     }
 
@@ -283,24 +290,26 @@ class WhosOnlineComponent extends Component
      */
     public function implementedEvents()
     {
-        $_events = parent::implementedEvents();
+        if ($this->tableExists) {
+            $_events = parent::implementedEvents();
 
-        $events = [];
+            $events = [];
 
-        if ($this->config('lastSeen')) {
-            $events['Component.Manager.beforeFilter'] = 'lastSeenEvent';
-        }
+            if ($this->config('lastSeen')) {
+                $events['Component.Manager.beforeFilter'] = 'lastSeenEvent';
+            }
 
-        if ($this->config('passwordRequests')) {
-            $events['Controller.Users.afterForgotPassword'] = 'passwordRequestEvent';
-        }
+            if ($this->config('passwordRequests')) {
+                $events['Controller.Users.afterForgotPassword'] = 'passwordRequestEvent';
+            }
 
-        if ($this->config('lastLogin') || $this->config('passedLogins')) {
-            $events['Controller.Users.afterLogin'] = 'afterLoginEvent';
-        }
+            if ($this->config('lastLogin') || $this->config('passedLogins')) {
+                $events['Controller.Users.afterLogin'] = 'afterLoginEvent';
+            }
 
-        if ($this->config('failedLogins')) {
-            $events['Controller.Users.afterInvalidLogin'] = 'invalidLoginEvent';
+            if ($this->config('failedLogins')) {
+                $events['Controller.Users.afterInvalidLogin'] = 'invalidLoginEvent';
+            }
         }
 
         return array_merge($_events, $events);
