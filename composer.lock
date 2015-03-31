@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5272da279d7ddcc97295137e44207fb8",
+    "hash": "506196f6e7cbb0ef771da6b07eef6201",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -841,16 +841,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "dev-master",
+            "version": "4.6.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "cc7eafa57206eeb797d6668299b3de537dfcfe82"
+                "reference": "903c2b8115738d1ea063ef8cb4876d95b6bc860f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/cc7eafa57206eeb797d6668299b3de537dfcfe82",
-                "reference": "cc7eafa57206eeb797d6668299b3de537dfcfe82",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/903c2b8115738d1ea063ef8cb4876d95b6bc860f",
+                "reference": "903c2b8115738d1ea063ef8cb4876d95b6bc860f",
                 "shasum": ""
             },
             "require": {
@@ -883,7 +883,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.7.x-dev"
+                    "dev-master": "4.6.x-dev"
                 }
             },
             "autoload": {
@@ -912,7 +912,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-03-28 20:46:47"
+            "time": "2015-03-28 20:46:36"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1347,12 +1347,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "8fc943e9a3e4b9bf79ea6eae45081d59a19a7549"
+                "reference": "3af7a5616766998f4942735228dbcd465d2c24d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/8fc943e9a3e4b9bf79ea6eae45081d59a19a7549",
-                "reference": "8fc943e9a3e4b9bf79ea6eae45081d59a19a7549",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/3af7a5616766998f4942735228dbcd465d2c24d3",
+                "reference": "3af7a5616766998f4942735228dbcd465d2c24d3",
                 "shasum": ""
             },
             "require": {
@@ -1388,13 +1388,14 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2015-03-30 15:59:03"
+            "time": "2015-03-30 21:52:44"
         }
     ],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cakemanager/cakephp-cakemanager": 20
+        "cakemanager/cakephp-cakemanager": 20,
+        "phpunit/phpunit": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
