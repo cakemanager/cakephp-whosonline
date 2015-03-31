@@ -275,7 +275,7 @@ class WhosOnlineComponent extends Component
      * @return void
      */
     public function lastSeenEvent($event)
-    {
+    {      
         $user = $this->_getUsermetas();
         if ($user) {
             $user->set('last_seen', Time::now());

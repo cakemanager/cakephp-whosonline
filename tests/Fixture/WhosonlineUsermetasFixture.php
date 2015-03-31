@@ -29,13 +29,65 @@ class WhosonlineUsermetasFixture extends TestFixture
      */
     // @codingStandardsIgnoreStart
     public $fields = [
-        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'user_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'last_seen' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-        'last_login' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-        'passed_logins' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'failed_logins' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'password_requests' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'id' => [
+            'type' => 'integer',
+        ],
+        'user_id' => [
+            'type' => 'integer',
+            'length' => 11,
+            'unsigned' => false,
+            'null' => true,
+            'default' => null,
+            'comment' => '',
+            'precision' => null,
+            'autoIncrement' => null
+        ],
+        'last_seen' => [
+            'type' => 'datetime',
+            'length' => null,
+            'null' => true,
+            'default' => null,
+            'comment' => '',
+            'precision' => null
+        ],
+        'last_login' => [
+            'type' => 'datetime',
+            'length' => null,
+            'null' => true,
+            'default' => null,
+            'comment' => '',
+            'precision' => null
+        ],
+        'passed_logins' => [
+            'type' => 'integer',
+            'length' => 11,
+            'unsigned' => false,
+            'null' => true,
+            'default' => null,
+            'comment' => '',
+            'precision' => null,
+            'autoIncrement' => null
+        ],
+        'failed_logins' => [
+            'type' => 'integer',
+            'length' => 11,
+            'unsigned' => false,
+            'null' => true,
+            'default' => null,
+            'comment' => '',
+            'precision' => null,
+            'autoIncrement' => null
+        ],
+        'password_requests' => [
+            'type' => 'integer',
+            'length' => 11,
+            'unsigned' => false,
+            'null' => true,
+            'default' => null,
+            'comment' => '',
+            'precision' => null,
+            'autoIncrement' => null
+        ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],

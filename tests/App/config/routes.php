@@ -12,19 +12,6 @@
  * @since         1.0
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-use Cake\Routing\Router;
+use Cake\Core\Plugin;
 
-Router::prefix('admin', function ($routes) {
-    $routes->plugin('WhosOnline', ['path' => '/whosonline'], function ($routes) {
-        
-        $routes->connect('/whosonline', [
-            'prefix'     => 'admin',
-            'plugin'     => 'WhosOnline',
-            'controller' => 'whosonline',
-            'action'     => 'index',
-        ]);
-        
-        $routes->fallbacks('InflectedRoute');
-    });
-    $routes->fallbacks('InflectedRoute');
-});
+Plugin::routes();

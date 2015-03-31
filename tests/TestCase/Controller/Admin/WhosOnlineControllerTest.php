@@ -28,9 +28,9 @@ class WhosOnlineControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'Users' => 'plugin.cake_manager.users',
-        'Roles' => 'plugin.cake_manager.roles',
-        'Usermetas' => 'plugin.whos_online.WhosonlineUsermetas',
+        'Users' => 'plugin.whos_online.users',
+        'Roles' => 'plugin.whos_online.roles',
+        'WhosonlineUsermetas' => 'plugin.whos_online.WhosonlineUsermetas',
     ];
 
     /**
@@ -51,7 +51,7 @@ class WhosOnlineControllerTest extends IntegrationTestCase
         // index
         $this->get('/admin/whosonline/whosonline');
         $this->assertRedirect('/users/login');
-
+        
         // view
         $this->get('/admin/whosonline/whosonline/view/1');
         $this->assertRedirect('/users/login');

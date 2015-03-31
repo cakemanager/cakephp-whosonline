@@ -30,9 +30,9 @@ class WhosOnlineComponentTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'Roles' => 'plugin.cake_manager.roles',
-        'Users' => 'plugin.cake_manager.users',
-        'Usermetas' => 'plugin.whos_online.WhosonlineUsermetas',
+        'Roles' => 'plugin.whos_online.roles',
+        'Users' => 'plugin.whos_online.users',
+        'WhosonlineUsermetas' => 'plugin.whos_online.WhosonlineUsermetas',
     ];
 
     /**
@@ -162,12 +162,17 @@ class WhosOnlineComponentTest extends IntegrationTestCase
         $this->post('/users/login', $login);
         $this->assertRedirect();
 
-        $this->session(['Auth.User' => [
-                'id' => 5,
-                'role_id' => 1,
-        ]]);
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 5,
+                    'role_id' => 1,
+                    'email' => 'test@test.com'
+                ]
+            ]
+        ]);
 
-        $this->get('/');
+        $this->get('/admin/manager/users');
         $this->assertNoRedirect();
 
         $user = $this->Usermetas->find('all')->first();
