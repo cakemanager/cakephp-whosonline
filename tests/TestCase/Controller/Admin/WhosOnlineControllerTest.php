@@ -49,22 +49,22 @@ class WhosOnlineControllerTest extends IntegrationTestCase
     public function testAuthorization()
     {
         // index
-        $this->get('/admin/whosonline/whosonline');
+        $this->get('/admin/whosonline/whos_online');
         $this->assertRedirect('/users/login');
         
         // view
-        $this->get('/admin/whosonline/whosonline/view/1');
+        $this->get('/admin/whosonline/whos_online/view/1');
         $this->assertRedirect('/users/login');
 
         // setting a wrong role_id
         $this->session(['Auth' => ['User' => ['role_id' => 2]]]);
 
         // index
-        $this->get('/admin/whosonline/whosonline');
+        $this->get('/admin/whosonline/whos_online');
         $this->assertResponseError();
 
         // view
-        $this->get('/admin/whosonline/whosonline/view/1');
+        $this->get('/admin/whosonline/whos_online/view/1');
         $this->assertResponseError();
     }
 
@@ -83,7 +83,7 @@ class WhosOnlineControllerTest extends IntegrationTestCase
                 'role_id' => 1,
         ]]);
 
-        $this->get('/admin/whosonline/whosonline');
+        $this->get('/admin/whosonline/whos_online');
         $this->assertResponseOk();
     }
 
@@ -102,7 +102,7 @@ class WhosOnlineControllerTest extends IntegrationTestCase
                 'role_id' => 1,
         ]]);
 
-        $this->get('/admin/whosonline/whosonline/view/5');
+        $this->get('/admin/whosonline/whos_online/view/5');
         $this->assertResponseOk();
     }
 
