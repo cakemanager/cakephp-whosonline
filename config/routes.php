@@ -20,7 +20,7 @@ Router::prefix('admin', function ($routes) {
         $routes->connect('/whosonline', [
             'prefix'     => 'admin',
             'plugin'     => 'WhosOnline',
-            'controller' => 'whosonline',
+            'controller' => 'whosOnline',
             'action'     => 'index',
         ]);
         
