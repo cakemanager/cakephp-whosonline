@@ -76,11 +76,20 @@ class WhosOnlineController extends AppController
      */
     public function index()
     {
+        $this->loadModel('CakeManager.Roles');
+        
         $this->Search->addFilter('email');
 
-        $query = $this->Search->search($this->Usermetas->find('all'));
+        $this->Search->addFilter('role_id', [
+            'options' => $this->Roles->find('list')->toArray(),
+        ]);
+        
+        $query = $this->Usermetas->find('all');
+        $query->where(['Users.email IS NOT NULL']);
+        
+        $search = $this->Search->search($query);
 
-        $this->set('usermetas', $this->paginate($query));
+        $this->set('usermetas', $this->paginate($search));
     }
 
     /**

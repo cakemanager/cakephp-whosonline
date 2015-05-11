@@ -45,13 +45,16 @@ Options for the component:
 - `userId` - Path to the users id in the session
 - `userModel` - The model of the users. Default `CakeManager.Users`
 - `usermetasModel` - The model of the usermetas. Default `WhosOnline.Usermetas`
-- `lastSeen` - Boolean if we should save the lastSeen-status
-- `lastLogin` - Boolean if we should save the lastLogin-status
-- `passedLogins` - Boolean if we should save the passedLogins-status
-- `failedLogins` - Boolean if we should save the failedLogins-status
-- `passwordRequests` - Boolean if we should save the passwordRequests-status
-
-All statuses are default set to `true`.
+- `lastSeen` - Boolean if we should save the lastSeen-status. Default `true`
+- `lastLogin` - Boolean if we should save the lastLogin-status. Default `true`
+- `passedLogins` - Boolean if we should save the passedLogins-status. Default `true`
+- `failedLogins` - Boolean if we should save the failedLogins-status. Default `true`
+- `passwordRequests` - Boolean if we should save the passwordRequests-status. Default `true`
+- `events` - Array with all events to use custom events.
+    - `lastSeen` - Event for when the users is last seen. Default `Component.Manager.beforeFilter`
+    - `passwordRequests` - Event for when an user requests a new password. Default `Controller.Users.afterForgotPassword`
+    - `passedLogin` - Event for a passed login. Default `Controller.Users.afterLogin`
+    - `failedLogin` - Event for a failed login. Default `Controller.Users.afterInvalidLogin`
 
 Example:
 
@@ -59,6 +62,7 @@ Example:
 $this->loadComponent('WhosOnline.WhosOnline', [
   'lastSeen' => true,
   'failedLogins' => false,
+  'events.lastSeen' => 'Controller.Users.customAfterLogin'
 ]);
 ```
 

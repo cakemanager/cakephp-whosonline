@@ -49,8 +49,14 @@ class WhosOnlineComponent extends Component
         'passedLogins' => true,
         'failedLogins' => true,
         'passwordRequests' => true,
+        'events' => [
+            'lastSeen' => 'Component.Manager.beforeFilter',
+            'passwordRequests' => 'Controller.Users.afterForgotPassword',
+            'passedLogin' => 'Controller.Users.afterLogin',
+            'failedLogin' => 'Controller.Users.afterInvalidLogin'
+        ]
     ];
-
+    
     /**
      * The User-model
      *
@@ -295,19 +301,19 @@ class WhosOnlineComponent extends Component
 
         if ($this->tableExists) {
             if ($this->config('lastSeen')) {
-                $events['Component.Manager.beforeFilter'] = 'lastSeenEvent';
+                $events[$this->config('events.lastSeen')] = 'lastSeenEvent';
             }
 
             if ($this->config('passwordRequests')) {
-                $events['Controller.Users.afterForgotPassword'] = 'passwordRequestEvent';
+                $events[$this->config('events.passwordRequests')] = 'passwordRequestEvent';
             }
 
             if ($this->config('lastLogin') || $this->config('passedLogins')) {
-                $events['Controller.Users.afterLogin'] = 'afterLoginEvent';
+                $events[$this->config('events.passedLogin')] = 'afterLoginEvent';
             }
 
             if ($this->config('failedLogins')) {
-                $events['Controller.Users.afterInvalidLogin'] = 'invalidLoginEvent';
+                $events[$this->config('events.failedLogin')] = 'invalidLoginEvent';
             }
         }
 
