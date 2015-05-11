@@ -1,6 +1,8 @@
 # WhosOnline plugin for CakePHP
 
-The WhosOnline plugin for CakePHP 3.0 and the CakeManager helps you to watch your registered users. 
+The WhosOnline plugin for CakePHP 3.0 (and the [CakeManager](https://github.com/cakemanager/cakephp-cakemanager)) helps 
+you to watch your registered users. You can see when they're logged in, last seen and more!
+
 You are able to see the following:
 
 - Last login timestamp
@@ -9,7 +11,8 @@ You are able to see the following:
 - Total failed logins
 - Total new password requests
 
-Note that you need the [CakeManager Plugin](https://github.com/cakemanager/cakephp-cakemanager) for this plugin!
+The plugin is especially built for the[CakeManager Plugin](https://github.com/cakemanager/cakephp-cakemanager) but is
+also easy to use without the CakeManager. Read below to change the current events, so you can customize it.
 
 ## Installation
 
@@ -28,7 +31,7 @@ You will need to add the following line to your application's bootstrap.php file
 ```php
 Plugin::load('WhosOnline', ['bootstrap' => true, 'routes' => true]);
 ```
-
+> Note: You don't need to load the `routes` if you are not using the CakeManager Plugin.
 
 ## Usage
 
@@ -56,6 +59,8 @@ Options for the component:
     - `passedLogin` - Event for a passed login. Default `Controller.Users.afterLogin`
     - `failedLogin` - Event for a failed login. Default `Controller.Users.afterInvalidLogin`
 
+> Note: Via the `events` configurations you can customize the events for your own application!
+
 Example:
 
 ```php
@@ -77,7 +82,7 @@ Support
 
 - [CakeManager Website](http://cakemanager.org/) - Website of the CakeManager Team. Here you can find everything about us and our plugins.
 
-- [Gitter](https://gitter.im/cakemanager/cakephp-cakemanager) - Chat Tool for GitHub to talk about issues and new features.
+- [Gitter](https://gitter.im/cakemanager/cakephp-whosonline) - Chat Tool for GitHub to talk about issues and new features.
 
 - [GitHub](https://github.com/cakemanager/cakephp-whosonline/issues) - When there's something wrong, please open a new issue!
 
