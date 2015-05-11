@@ -1,5 +1,7 @@
 # WhosOnline plugin for CakePHP
 
+[![Join the chat at https://gitter.im/cakemanager/cakephp-whosonline](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cakemanager/cakephp-whosonline?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 The WhosOnline plugin for CakePHP 3.0 and the CakeManager helps you to watch your registered users. 
 You are able to see the following:
 
